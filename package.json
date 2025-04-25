@@ -1,7 +1,7 @@
 {
 	"name": "com.game5mobile.mathutilities",
 	"version": "1.0.0",
-	"displayName": "Math Utilities",
+	"displayName": "Five - Math Utilities",
 	"description": "Contain some functions for math",
 	"unity": "2021.3",
 	"unityRelease": "4f1",
