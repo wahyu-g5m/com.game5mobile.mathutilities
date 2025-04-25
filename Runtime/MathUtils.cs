@@ -1,5 +1,6 @@
 using BigInteger = System.Numerics.BigInteger;
 using UnityEngine;
+using System;
 
 namespace Toolbox.MathUtilities
 {
@@ -121,12 +122,12 @@ namespace Toolbox.MathUtilities
 
             if (i == 1 && roundedNumber < 1)
             {
-                roundedNumberString = roundedNumber.Format();
+                roundedNumberString = Format(roundedNumber);
             }
             else
             {
-                roundedNumberString = roundedNumber.Format();
-                var roundedNumberSplit = roundedNumber.Format().Split(",");
+                roundedNumberString = Format(roundedNumber);
+                var roundedNumberSplit = Format(roundedNumber).Split(",");
                 if (roundedNumberSplit.Length == 2)
                 {
                     var decimalPoint = roundedNumberSplit[0].Length >= 3 ? 1 : 2;
@@ -179,12 +180,12 @@ namespace Toolbox.MathUtilities
 
             if (i == 1 && roundedNumber < 1)
             {
-                roundedNumberString = roundedNumber.Format();
+                roundedNumberString = Format(roundedNumber);
             }
             else
             {
-                roundedNumberString = roundedNumber.Format();
-                var roundedNumberSplit = roundedNumber.Format().Split(",");
+                roundedNumberString = Format(roundedNumber);
+                var roundedNumberSplit = Format(roundedNumber).Split(",");
                 if (roundedNumberSplit.Length == 2)
                 {
                     var decimalPoint = roundedNumberSplit[0].Length >= 3 ? 1 : 2;
@@ -203,6 +204,16 @@ namespace Toolbox.MathUtilities
             "B",
             "T"
         };
+
+        private static string Format(long i)
+        {
+            return string.Format("{0:n0}", i);
+        }
+
+        private static string Format(BigInteger i)
+        {
+            return i.ToString("N0");
+        }
         #endregion
     }
 }
