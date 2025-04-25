@@ -39,6 +39,7 @@ namespace Toolbox.MathUtilities
             return (int)ceilValue;
         }
 
+        #region Easings
         public static float EaseInQuad(float start, float end, float t)
         {
             t = Mathf.Clamp01(t);
@@ -75,5 +76,133 @@ namespace Toolbox.MathUtilities
         {
             return 1 - (1 - t) * (1 - t);
         }
+        #endregion
+
+        # region Abbreviations
+        public static ValueTuple<string, string> FormatNumber(long number)
+        {
+            string roundedNumberString = string.Empty;
+            long roundedNumber = number;
+            long thousand = 1000;
+            long modValue = 0;
+            int i = 0;
+            while (Mathf.Abs(roundedNumber) >= thousand)
+            {
+                modValue = roundedNumber % thousand;
+                roundedNumber /= thousand;
+
+                i++;
+            }
+
+            string abbreviation = string.Empty;
+
+            if (i > 0)
+            {
+                if (roundedNumber < 1)
+                {
+                    i -= 1;
+                    roundedNumber *= thousand;
+                    roundedNumber += modValue;
+                }
+
+                if (i < Abbreviations.Length)
+                {
+                    abbreviation = Abbreviations[i];
+                }
+                else
+                {
+                    var abbDistance = i - Abbreviations.Length;
+                    var secondChar = abbDistance % 26;
+                    var firstChar = Mathf.Clamp(abbDistance / 26, 0, 25);
+
+                    abbreviation = Convert.ToChar('a' + firstChar).ToString() + Convert.ToChar('a' + secondChar).ToString();
+                }
+            }
+
+            if (i == 1 && roundedNumber < 1)
+            {
+                roundedNumberString = roundedNumber.Format();
+            }
+            else
+            {
+                roundedNumberString = roundedNumber.Format();
+                var roundedNumberSplit = roundedNumber.Format().Split(",");
+                if (roundedNumberSplit.Length == 2)
+                {
+                    var decimalPoint = roundedNumberSplit[0].Length >= 3 ? 1 : 2;
+                    roundedNumberString = roundedNumberSplit[0] + "," + roundedNumberSplit[1].Substring(0, decimalPoint);
+                }
+            }
+            roundedNumberString = roundedNumberString.Replace(",", ".");
+            return new ValueTuple<string, string>(roundedNumberString, abbreviation);
+        }
+
+        public static ValueTuple<string, string> FormatNumber(BigInteger number)
+        {
+            string roundedNumberString = string.Empty;
+            var roundedNumber = number;
+            var thousand = 1000;
+            var modValue = new BigInteger();
+            int i = 0;
+            while (BigInteger.Abs(roundedNumber) >= thousand)
+            {
+                modValue = roundedNumber % thousand;
+                roundedNumber /= thousand;
+
+                i++;
+            }
+
+            string abbreviation = string.Empty;
+            if (i > 0)
+            {
+                if (i == 1 && roundedNumber < 1)
+                {
+                    i -= 1;
+                }
+
+                roundedNumber *= thousand;
+                roundedNumber += modValue;
+
+                if (i < Abbreviations.Length)
+                {
+                    abbreviation = Abbreviations[i];
+                }
+                else
+                {
+                    var abbDistance = i - Abbreviations.Length;
+                    var secondChar = abbDistance % 26;
+                    var firstChar = Mathf.Clamp(abbDistance / 26, 0, 25);
+
+                    abbreviation = Convert.ToChar('a' + firstChar).ToString() + Convert.ToChar('a' + secondChar).ToString();
+                }
+            }
+
+            if (i == 1 && roundedNumber < 1)
+            {
+                roundedNumberString = roundedNumber.Format();
+            }
+            else
+            {
+                roundedNumberString = roundedNumber.Format();
+                var roundedNumberSplit = roundedNumber.Format().Split(",");
+                if (roundedNumberSplit.Length == 2)
+                {
+                    var decimalPoint = roundedNumberSplit[0].Length >= 3 ? 1 : 2;
+                    roundedNumberString = roundedNumberSplit[0] + "," + roundedNumberSplit[1].Substring(0, decimalPoint);
+                }
+            }
+            roundedNumberString = roundedNumberString.Replace(",", ".");
+            return new ValueTuple<string, string>(roundedNumberString, abbreviation);
+        }
+
+        private static readonly string[] Abbreviations = new string[5]
+        {
+            "",
+            "K",
+            "M",
+            "B",
+            "T"
+        };
+        #endregion
     }
 }
