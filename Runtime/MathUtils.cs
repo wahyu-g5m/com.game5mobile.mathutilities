@@ -2,7 +2,7 @@ using BigInteger = System.Numerics.BigInteger;
 using UnityEngine;
 using System;
 
-namespace Toolbox.MathUtilities
+namespace Five.Utils
 {
     public static class MathUtils
     {
